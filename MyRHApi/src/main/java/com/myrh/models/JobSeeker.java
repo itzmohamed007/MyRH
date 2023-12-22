@@ -10,7 +10,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class JobSeeker extends User {
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String identifier;
     private String resume;
     @OneToMany(mappedBy = "jobSeeker")
