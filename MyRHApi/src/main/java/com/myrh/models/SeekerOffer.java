@@ -14,12 +14,12 @@ public class SeekerOffer {
     private String letter;
     @ManyToOne
     @MapsId("seekerUuid")
-    @JoinColumn(name = "seekerUuid")
+    @JoinColumn(name = "seeker_uuid")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private JobSeeker jobSeeker;
     @ManyToOne
     @MapsId("offerUuid")
-    @JoinColumn(name = "offerUuid")
+    @JoinColumn(name = "offer_uuid")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private JobOffer jobOffer;
 }
