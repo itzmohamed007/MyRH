@@ -6,6 +6,7 @@ import com.myrh.exceptions.BadRequestException;
 import com.myrh.exceptions.ResourceNotFoundException;
 import com.myrh.models.JobOffer;
 import com.myrh.repositories.JobOfferRepository;
+import com.myrh.repositories.RecruiterRepository;
 import com.myrh.services.interfaces.IJobOfferService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @Transactional
 public class JobOfferService implements IJobOfferService {
     private final JobOfferRepository repository;
+    private final RecruiterRepository recruiterRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -42,6 +44,8 @@ public class JobOfferService implements IJobOfferService {
 
     @Override
     public ResJobOffer create(ReqJobOffer reqJobOffer) {
+        recruiterRepository.findById(reqJobOffer.getRecruiter())
+                .orElseThrow(() -> new ResourceNotFoundException("no recruiter was found with uuid " + reqJobOffer.getRecruiter()));
         JobOffer savedJobOffer = repository.save(modelMapper.map(reqJobOffer, JobOffer.class));
         return modelMapper.map(savedJobOffer, ResJobOffer.class);
     }
@@ -54,9 +58,11 @@ public class JobOfferService implements IJobOfferService {
 
     @Override
     public ResJobOffer update(ReqJobOffer reqJobOffer, UUID uuid) {
+        recruiterRepository.findById(reqJobOffer.getRecruiter())
+                .orElseThrow(() -> new ResourceNotFoundException("no recruiter was found with uuid " + reqJobOffer.getRecruiter()));
+        this.read(uuid);
+        reqJobOffer.setUuid(uuid); // insure job modification, not creation
         try {
-            this.read(uuid);
-            reqJobOffer.setUuid(uuid); // insure job modification, not creation
             JobOffer updatedJobOffer = repository.save(modelMapper.map(reqJobOffer, JobOffer.class));
             return modelMapper.map(updatedJobOffer, ResJobOffer.class);
         } catch (IllegalArgumentException e) { throw new BadRequestException("please enter an available status"); }
