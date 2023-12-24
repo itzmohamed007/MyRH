@@ -19,6 +19,8 @@ public class JobOffer {
     private String city;
     private String educationLevel;
     private Float salary;
+    @Enumerated(value = EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR NOT NULL DEFAULT 'pending'")
     private Status status;
     @ManyToOne
     private Recruiter recruiter;
