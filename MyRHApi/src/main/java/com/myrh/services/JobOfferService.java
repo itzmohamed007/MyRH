@@ -2,6 +2,7 @@ package com.myrh.services;
 
 import com.myrh.dtos.requests.ReqJobOffer;
 import com.myrh.dtos.responses.ResJobOffer;
+import com.myrh.models.JobOffer;
 import com.myrh.repositories.JobOfferRepository;
 import com.myrh.services.interfaces.IJobOfferService;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class JobOffer implements IJobOfferService {
+public class JobOfferService implements IJobOfferService {
     private final JobOfferRepository repository;
 
     @Override
     public ResJobOffer read(UUID uuid) {
-        return null;
+//        return repository.findById(uuid).orElseThrow(() -> new );
     }
 
     @Override
