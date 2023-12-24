@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.Set;
 public class Recruiter extends User {
     private String password;
     private String image;
-    @OneToMany(mappedBy = "recruiter", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recruiter")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<JobOffer> jobOffers;
 }

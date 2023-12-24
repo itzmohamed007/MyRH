@@ -3,6 +3,8 @@ package com.myrh.models;
 import com.myrh.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 import java.util.UUID;
@@ -22,8 +24,9 @@ public class JobOffer {
     @Enumerated(value = EnumType.STRING)
     @Column(columnDefinition = "VARCHAR NOT NULL DEFAULT 'pending'")
     private Status status;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Recruiter recruiter;
     @OneToMany(mappedBy = "jobOffer")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<SeekerOffer> seekerOffers;
 }
