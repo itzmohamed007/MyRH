@@ -1,7 +1,6 @@
-package com.myrh.models;
+package com.myrh.dtos.noRelations;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
+import com.myrh.models.JobOffer;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
@@ -11,13 +10,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 
-@Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Recruiter extends User {
+public class EmptyRecruiter extends EmptyUser {
     private String password;
     private String image;
-    @OneToMany(mappedBy = "recruiter", fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<JobOffer> jobOffers;
 }

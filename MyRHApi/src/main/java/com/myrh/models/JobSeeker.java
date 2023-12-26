@@ -3,6 +3,8 @@ package com.myrh.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 
@@ -14,5 +16,6 @@ public class JobSeeker extends User {
     private String identifier;
     private String resume;
     @OneToMany(mappedBy = "jobSeeker")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<SeekerOffer> seekerOffers;
 }
