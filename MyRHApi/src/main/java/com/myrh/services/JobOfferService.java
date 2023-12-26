@@ -2,6 +2,7 @@ package com.myrh.services;
 
 import com.myrh.dtos.requests.ReqJobOffer;
 import com.myrh.dtos.responses.ResJobOffer;
+import com.myrh.enums.Status;
 import com.myrh.exceptions.BadRequestException;
 import com.myrh.exceptions.ResourceNotFoundException;
 import com.myrh.models.JobOffer;
@@ -27,7 +28,8 @@ public class JobOfferService implements IJobOfferService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ResJobOffer read(UUID uuid) {
+    public ResJobOffer read(String stringUuid) {
+        UUID uuid = this.parseStringToUuid(stringUuid);
         JobOffer jobOffer = repository.findById(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("No Job were found with uuid "+ uuid));
         return modelMapper.map(jobOffer, ResJobOffer.class);
@@ -44,28 +46,32 @@ public class JobOfferService implements IJobOfferService {
 
     @Override
     public ResJobOffer create(ReqJobOffer reqJobOffer) {
-        recruiterRepository.findById(reqJobOffer.getRecruiter())
-                .orElseThrow(() -> new ResourceNotFoundException("no recruiter was found with uuid " + reqJobOffer.getRecruiter()));
+        this.checkRecruiterPresence(this.parseStringToUuid(reqJobOffer.getRecruiter()));
+        reqJobOffer.setStatus("pending");
         JobOffer savedJobOffer = repository.save(modelMapper.map(reqJobOffer, JobOffer.class));
         return modelMapper.map(savedJobOffer, ResJobOffer.class);
     }
 
     @Override
-    public void delete(UUID uuid) {
-        this.read(uuid);
+    public void delete(String jobOfferUuid) {
+        UUID uuid = this.parseStringToUuid(jobOfferUuid);
+        this.checkJobOfferPresence(uuid);
         repository.deleteById(uuid);
     }
 
     @Override
-    public ResJobOffer update(ReqJobOffer reqJobOffer, UUID uuid) {
-        recruiterRepository.findById(reqJobOffer.getRecruiter())
-                .orElseThrow(() -> new ResourceNotFoundException("no recruiter was found with uuid " + reqJobOffer.getRecruiter()));
-        this.read(uuid);
-        reqJobOffer.setUuid(uuid); // insure job modification, not creation
+    public ResJobOffer update(ReqJobOffer reqJobOffer, String jobOfferUuid) {
         try {
-            JobOffer updatedJobOffer = repository.save(modelMapper.map(reqJobOffer, JobOffer.class));
+            UUID parsedJobOfferUuid = this.parseStringToUuid(jobOfferUuid);
+            UUID parsedRecruiterUuid = this.parseStringToUuid(reqJobOffer.getRecruiter());
+            this.checkRecruiterPresence(parsedRecruiterUuid);
+            this.checkJobOfferPresence(parsedJobOfferUuid);
+            reqJobOffer.setUuid(jobOfferUuid); // insure job modification, not creation
+            JobOffer jobOffer = modelMapper.map(reqJobOffer, JobOffer.class);
+            jobOffer.setStatus(Status.valueOf(reqJobOffer.getStatus()));
+            JobOffer updatedJobOffer = repository.save(jobOffer);
             return modelMapper.map(updatedJobOffer, ResJobOffer.class);
-        } catch (IllegalArgumentException e) { throw new BadRequestException("please enter an available status"); }
+        } catch (IllegalArgumentException e) { throw new BadRequestException("please enter an available status ['pending', 'accepted', 'refused']"); }
     }
 
     @Override
@@ -73,5 +79,19 @@ public class JobOfferService implements IJobOfferService {
         Page<JobOffer> jobOffers = repository.findAll(pageable);
         if(jobOffers.isEmpty()) throw new ResourceNotFoundException("No jobs were found");
         return jobOffers.map(jobOffer -> modelMapper.map(jobOffer, ResJobOffer.class));
+    }
+
+    private void checkRecruiterPresence(UUID recruiterUuid) {
+        recruiterRepository.findById(recruiterUuid)
+                .orElseThrow(() -> new ResourceNotFoundException("no recruiter was found with uuid " + recruiterUuid));
+    }
+
+    private void checkJobOfferPresence(UUID jobOfferUuid) {
+        this.repository.findById(jobOfferUuid).orElseThrow(() -> new ResourceNotFoundException("No job offer was found with uuid " + jobOfferUuid));
+    }
+
+    private UUID parseStringToUuid(String stringUuid) {
+        try { return UUID.fromString(stringUuid); }
+        catch (IllegalArgumentException e) { throw new BadRequestException("please enter a valid UUID format"); }
     }
 }

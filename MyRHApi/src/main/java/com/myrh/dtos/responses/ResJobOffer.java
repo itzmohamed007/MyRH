@@ -1,5 +1,6 @@
 package com.myrh.dtos.responses;
 
+import com.myrh.dtos.noRelations.EmptyRecruiter;
 import com.myrh.enums.Status;
 import com.myrh.models.Recruiter;
 import com.myrh.models.SeekerOffer;
@@ -20,6 +21,6 @@ public class ResJobOffer {
     private String educationLevel;
     private Float salary;
     private Status status;
-    private Recruiter recruiter;
+    private EmptyRecruiter recruiter;
     private Set<SeekerOffer> seekerOffers;
 }

@@ -13,6 +13,7 @@ import java.util.UUID;
 @Data
 public class JobOffer {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID uuid;
     private String title;
@@ -26,7 +27,7 @@ public class JobOffer {
     private Status status;
     @ManyToOne(fetch = FetchType.LAZY)
     private Recruiter recruiter;
-    @OneToMany(mappedBy = "jobOffer")
+    @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<SeekerOffer> seekerOffers;
 }

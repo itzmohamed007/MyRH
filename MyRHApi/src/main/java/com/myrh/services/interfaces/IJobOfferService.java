@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
-public interface IJobOfferService extends GlobalService<ReqJobOffer, ResJobOffer, UUID> {
-    ResJobOffer update(ReqJobOffer jobOffer, UUID uuid);
+public interface IJobOfferService extends GlobalService<ReqJobOffer, ResJobOffer, String> {
+    ResJobOffer update(ReqJobOffer jobOffer, String uuid);
     Page<ResJobOffer> readAllPaginated(Pageable pageable);
 }

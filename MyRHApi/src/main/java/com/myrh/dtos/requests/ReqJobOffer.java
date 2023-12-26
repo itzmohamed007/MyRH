@@ -8,6 +8,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.Set;
@@ -15,7 +16,8 @@ import java.util.UUID;
 
 @Data
 public class ReqJobOffer {
-    private UUID uuid;
+    @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$\n", message = "please enter a valid uuid format")
+    private String uuid;
     @NotNull(message = "title cannot be null")
     private String title;
     @NotNull(message = "description cannot be null")
@@ -29,7 +31,9 @@ public class ReqJobOffer {
     @Min(value = 0)
     @Max(value = 100000)
     private Float salary;
-    private Status status;
+    @NotNull(message = "status cannot be null")
+    private String status;
     @NotNull(message = "recruiter cannot be null")
-    private UUID recruiter;
+    @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", message = "please enter a valid UUID format")
+    private String recruiter;
 }
