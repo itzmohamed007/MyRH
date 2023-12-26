@@ -12,6 +12,7 @@ public abstract class User {
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID uuid;
     private String fullName;
+    @Column(unique = true, nullable = false)
     private String email;
     private String phone;
 }
