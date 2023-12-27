@@ -39,8 +39,9 @@ public class GlobalExceptionHandler {
     }
 
     private String extractViolatedKey(String message) {
-        if (message.contains("recruiter_email_key")) return "(email)";
-        else if (message.contains("recruiter_phone_key")) return "(phone)";
+        if (message.contains("email_key")) return "(email)";
+        else if (message.contains("phone_key")) return "(phone)";
+        else if (message.contains("identifier_key")) return "(identifier)";
         else return "(unknown key)";
     }
 }
