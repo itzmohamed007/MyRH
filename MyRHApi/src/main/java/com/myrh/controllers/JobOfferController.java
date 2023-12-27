@@ -3,9 +3,8 @@ package com.myrh.controllers;
 import com.myrh.controllers.interfaces.IGlobalController;
 import com.myrh.dtos.requests.ReqJobOffer;
 import com.myrh.dtos.responses.ResJobOffer;
-import com.myrh.services.JobOfferService;
+import com.myrh.services.interfaces.IJobOfferService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,7 @@ import java.util.UUID;
 @RequestMapping("/api/offers")
 @RequiredArgsConstructor
 public class JobOfferController implements IGlobalController<ReqJobOffer, ResJobOffer, String> {
-    private final JobOfferService service;
+    private final IJobOfferService service;
 
     @Override
     @GetMapping("/{uuid}")

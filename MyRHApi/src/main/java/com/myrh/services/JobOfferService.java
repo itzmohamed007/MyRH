@@ -9,6 +9,7 @@ import com.myrh.models.JobOffer;
 import com.myrh.repositories.JobOfferRepository;
 import com.myrh.repositories.RecruiterRepository;
 import com.myrh.services.interfaces.IJobOfferService;
+import com.myrh.utils.Utils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -29,7 +30,7 @@ public class JobOfferService implements IJobOfferService {
 
     @Override
     public ResJobOffer read(String stringUuid) {
-        UUID uuid = this.parseStringToUuid(stringUuid);
+        UUID uuid = Utils.parseStringToUuid(stringUuid);
         JobOffer jobOffer = repository.findById(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("No Job were found with uuid "+ uuid));
         return modelMapper.map(jobOffer, ResJobOffer.class);
@@ -46,7 +47,7 @@ public class JobOfferService implements IJobOfferService {
 
     @Override
     public ResJobOffer create(ReqJobOffer reqJobOffer) {
-        this.checkRecruiterPresence(this.parseStringToUuid(reqJobOffer.getRecruiter()));
+        this.checkRecruiterPresence(Utils.parseStringToUuid(reqJobOffer.getRecruiter()));
         reqJobOffer.setStatus("pending");
         JobOffer savedJobOffer = repository.save(modelMapper.map(reqJobOffer, JobOffer.class));
         return modelMapper.map(savedJobOffer, ResJobOffer.class);
@@ -54,7 +55,7 @@ public class JobOfferService implements IJobOfferService {
 
     @Override
     public void delete(String jobOfferUuid) {
-        UUID uuid = this.parseStringToUuid(jobOfferUuid);
+        UUID uuid = Utils.parseStringToUuid(jobOfferUuid);
         this.checkJobOfferPresence(uuid);
         repository.deleteById(uuid);
     }
@@ -62,8 +63,8 @@ public class JobOfferService implements IJobOfferService {
     @Override
     public ResJobOffer update(ReqJobOffer reqJobOffer, String jobOfferUuid) {
         try {
-            UUID parsedJobOfferUuid = this.parseStringToUuid(jobOfferUuid);
-            UUID parsedRecruiterUuid = this.parseStringToUuid(reqJobOffer.getRecruiter());
+            UUID parsedJobOfferUuid = Utils.parseStringToUuid(jobOfferUuid);
+            UUID parsedRecruiterUuid = Utils.parseStringToUuid(reqJobOffer.getRecruiter());
             this.checkRecruiterPresence(parsedRecruiterUuid);
             this.checkJobOfferPresence(parsedJobOfferUuid);
             reqJobOffer.setUuid(jobOfferUuid); // insure job modification, not creation
@@ -88,10 +89,5 @@ public class JobOfferService implements IJobOfferService {
 
     private void checkJobOfferPresence(UUID jobOfferUuid) {
         this.repository.findById(jobOfferUuid).orElseThrow(() -> new ResourceNotFoundException("No job offer was found with uuid " + jobOfferUuid));
-    }
-
-    private UUID parseStringToUuid(String stringUuid) {
-        try { return UUID.fromString(stringUuid); }
-        catch (IllegalArgumentException e) { throw new BadRequestException("please enter a valid UUID format"); }
     }
 }
