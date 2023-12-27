@@ -31,4 +31,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleBadRequestException(BadRequestException e) {
         return new ResponseEntity<>(Map.of("message", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalConstraintViolation.class)
+    public ResponseEntity<Map<String, String>> handleIllegalConstraintViolation(IllegalConstraintViolation e) {
+        String violatedKey = this.extractViolatedKey(e.getMessage());
+        return new ResponseEntity<>(Map.of("message", "Unique constraint violation " + violatedKey), HttpStatus.BAD_REQUEST);
+    }
+
+    private String extractViolatedKey(String message) {
+        if (message.contains("recruiter_email_key")) return "(email)";
+        else if (message.contains("recruiter_phone_key")) return "(phone)";
+        else return "(unknown key)";
+    }
 }

@@ -12,9 +12,9 @@ public abstract class EmptyUser {
     @NotNull(message = "full name cannot be null")
     private String fullName;
     @NotNull(message = "email cannot be null")
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n", message = "please enter a valid email address")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "please enter a valid email address")
     private String email;
     @NotNull(message = "phone cannot be null")
-    @Pattern(regexp = "^[0-9]{10}$\n", message = "please enter a valid phone number")
+    @Pattern(regexp = "^[0-9]{10}$", message = "please enter a valid phone number")
     private String phone;
 }

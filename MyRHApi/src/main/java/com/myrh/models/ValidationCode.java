@@ -10,6 +10,7 @@ import java.util.UUID;
 @Data
 public class ValidationCode {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID uuid;
     private String code;

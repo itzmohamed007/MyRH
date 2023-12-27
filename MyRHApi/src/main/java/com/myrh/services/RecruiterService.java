@@ -41,7 +41,7 @@ public class RecruiterService implements IRecruiterService {
         List<Recruiter> recruiters = repository.findAll();
         if(recruiters.isEmpty()) throw new ResourceNotFoundException("No recruiters were found");
         return recruiters.stream()
-                .map(recruiter -> modelMapper.map(recruiters, ResRecruiter.class))
+                .map(recruiter -> modelMapper.map(recruiter, ResRecruiter.class))
                 .toList();
     }
 
@@ -51,7 +51,7 @@ public class RecruiterService implements IRecruiterService {
             Recruiter savedRecruiter = repository.save(modelMapper.map(reqRecruiter, Recruiter.class));
             return modelMapper.map(savedRecruiter, ResRecruiter.class);
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalConstraintViolation("Violated unique email/phone uniqueness constraint"); }
+            throw new IllegalConstraintViolation(e.getMessage()); }
     }
 
     @Override
@@ -71,7 +71,7 @@ public class RecruiterService implements IRecruiterService {
             Recruiter updatedRecruiter = repository.save(recruiter);
             return modelMapper.map(updatedRecruiter, ResRecruiter.class);
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalConstraintViolation("Violated unique email/phone uniqueness constraint"); }
+            throw new IllegalConstraintViolation(e.getMessage()); }
     }
 
     @Override
