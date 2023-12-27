@@ -1,4 +1,8 @@
 package com.myrh.services.interfaces;
 
-public interface IJobSeekerService extends IGlobalService{
+import com.myrh.dtos.requests.ReqJobSeeker;
+import com.myrh.dtos.responses.ResJobSeeker;
+
+public interface IJobSeekerService extends IGlobalService<ReqJobSeeker, ResJobSeeker, String> {
+    
 }
