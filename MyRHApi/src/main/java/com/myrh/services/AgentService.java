@@ -39,7 +39,7 @@ public class AgentService implements IAgentService {
         List<Agent> agents = repository.findAll();
         if(agents.isEmpty()) throw new ResourceNotFoundException("No agents were found");
         return agents.stream()
-                .map(recruiter -> modelMapper.map(agents, ResAgent.class))
+                .map(agent -> modelMapper.map(agent, ResAgent.class))
                 .toList();
     }
 
@@ -76,7 +76,7 @@ public class AgentService implements IAgentService {
     public Page<ResAgent> readAllPaginated(Pageable pageable) {
         Page<Agent> agents = repository.findAll(pageable);
         if(agents.isEmpty()) throw new ResourceNotFoundException("No agents were found");
-        return agents.map(recruiter -> modelMapper.map(agents, ResAgent.class));
+        return agents.map(agent -> modelMapper.map(agent, ResAgent.class));
     }
 
     private void checkAgentPresence(UUID uuid) {

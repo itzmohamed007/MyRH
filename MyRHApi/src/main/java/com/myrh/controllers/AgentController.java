@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/agents")
+@RequestMapping("/api/agents")
 @RequiredArgsConstructor
 public class AgentController implements IGlobalController<ReqAgent, ResAgent, String> {
     private final IAgentService service;
