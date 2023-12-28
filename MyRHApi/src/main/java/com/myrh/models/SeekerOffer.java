@@ -2,12 +2,16 @@ package com.myrh.models;
 
 import com.myrh.Embeddables.SeekerOfferId;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SeekerOffer {
     @EmbeddedId
     private SeekerOfferId id;
