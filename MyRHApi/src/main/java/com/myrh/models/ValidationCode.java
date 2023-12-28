@@ -13,6 +13,7 @@ public class ValidationCode {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid default gen_random_uuid()")
     private UUID uuid;
+    @Column(unique = true, nullable = false)
     private String code;
     private LocalDateTime date;
 }
