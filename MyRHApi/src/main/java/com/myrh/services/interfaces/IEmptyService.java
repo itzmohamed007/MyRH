@@ -7,7 +7,7 @@ import java.util.List;
     # Y => Primary key type
 */
 public interface IEmptyService<X, Y>{
-    Y read(Y y);
-    Y create(X x);
+    X read(Y y);
+    X create(X x);
     void delete(Y y);
 }
