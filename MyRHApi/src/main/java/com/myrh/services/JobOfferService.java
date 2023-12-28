@@ -51,7 +51,7 @@ public class JobOfferService implements IJobOfferService {
         reqJobOffer.setStatus("pending");
         JobOffer jobOffer = modelMapper.map(reqJobOffer, JobOffer.class);
         jobOffer.setRecruiter(this.checkRecruiterPresence(Utils.parseStringToUuid(reqJobOffer.getRecruiter())));
-        JobOffer savedJobOffer = repository.save(modelMapper.map(reqJobOffer, JobOffer.class));
+        JobOffer savedJobOffer = repository.save(jobOffer);
         return modelMapper.map(savedJobOffer, ResJobOffer.class);
     }
 
