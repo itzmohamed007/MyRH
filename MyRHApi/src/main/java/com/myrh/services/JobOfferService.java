@@ -6,6 +6,7 @@ import com.myrh.enums.Status;
 import com.myrh.exceptions.BadRequestException;
 import com.myrh.exceptions.ResourceNotFoundException;
 import com.myrh.models.JobOffer;
+import com.myrh.models.Recruiter;
 import com.myrh.repositories.JobOfferRepository;
 import com.myrh.repositories.RecruiterRepository;
 import com.myrh.services.interfaces.IJobOfferService;
@@ -47,8 +48,9 @@ public class JobOfferService implements IJobOfferService {
 
     @Override
     public ResJobOffer create(ReqJobOffer reqJobOffer) {
-        this.checkRecruiterPresence(Utils.parseStringToUuid(reqJobOffer.getRecruiter()));
         reqJobOffer.setStatus("pending");
+        JobOffer jobOffer = modelMapper.map(reqJobOffer, JobOffer.class);
+        jobOffer.setRecruiter(this.checkRecruiterPresence(Utils.parseStringToUuid(reqJobOffer.getRecruiter())));
         JobOffer savedJobOffer = repository.save(modelMapper.map(reqJobOffer, JobOffer.class));
         return modelMapper.map(savedJobOffer, ResJobOffer.class);
     }
@@ -65,11 +67,12 @@ public class JobOfferService implements IJobOfferService {
         try {
             UUID parsedJobOfferUuid = Utils.parseStringToUuid(jobOfferUuid);
             UUID parsedRecruiterUuid = Utils.parseStringToUuid(reqJobOffer.getRecruiter());
-            this.checkRecruiterPresence(parsedRecruiterUuid);
+            Recruiter recruiter = this.checkRecruiterPresence(parsedRecruiterUuid);
             this.checkJobOfferPresence(parsedJobOfferUuid);
-            reqJobOffer.setUuid(jobOfferUuid); // insure job modification, not creation
             JobOffer jobOffer = modelMapper.map(reqJobOffer, JobOffer.class);
+            jobOffer.setUuid(parsedJobOfferUuid);
             jobOffer.setStatus(Status.valueOf(reqJobOffer.getStatus()));
+            jobOffer.setRecruiter(recruiter);
             JobOffer updatedJobOffer = repository.save(jobOffer);
             return modelMapper.map(updatedJobOffer, ResJobOffer.class);
         } catch (IllegalArgumentException e) { throw new BadRequestException("please enter an available status ['pending', 'accepted', 'refused']"); }
@@ -82,8 +85,8 @@ public class JobOfferService implements IJobOfferService {
         return jobOffers.map(jobOffer -> modelMapper.map(jobOffer, ResJobOffer.class));
     }
 
-    private void checkRecruiterPresence(UUID recruiterUuid) {
-        recruiterRepository.findById(recruiterUuid)
+    private Recruiter checkRecruiterPresence(UUID recruiterUuid) {
+        return recruiterRepository.findById(recruiterUuid)
                 .orElseThrow(() -> new ResourceNotFoundException("no recruiter was found with uuid " + recruiterUuid));
     }
 
