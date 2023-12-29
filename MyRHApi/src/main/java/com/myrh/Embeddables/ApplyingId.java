@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeekerOfferId implements Serializable {
+public class ApplyingId implements Serializable {
     @Column(name = "seeker_uuid")
     private UUID seekerUuid;
     @Column(name = "offer_uuid")

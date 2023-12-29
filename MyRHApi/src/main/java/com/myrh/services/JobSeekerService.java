@@ -46,9 +46,9 @@ public class JobSeekerService implements IJobSeekerService {
     @Override
     public ResJobSeeker create(ReqJobSeeker reqJobSeeker) {
         try {
-            String uuid = UUID.randomUUID().toString();
+            String identifier = UUID.randomUUID().toString();
             JobSeeker jobSeeker = modelMapper.map(reqJobSeeker, JobSeeker.class);
-            jobSeeker.setIdentifier(uuid.substring(0, 8));
+            jobSeeker.setIdentifier(identifier);
             JobSeeker savedJobSeeker = repository.save(jobSeeker);
             return modelMapper.map(savedJobSeeker, ResJobSeeker.class);
         } catch (DataIntegrityViolationException e) {
@@ -67,9 +67,9 @@ public class JobSeekerService implements IJobSeekerService {
         try {
             UUID parsedJobSeekerUuid = Utils.parseStringToUuid(JobSeekerUuid);
             this.checkJobSeekerPresence(parsedJobSeekerUuid);
-            reqJobSeeker.setUuid(JobSeekerUuid);
-            reqJobSeeker.setIdentifier(JobSeekerUuid.substring(0, 8));
+            reqJobSeeker.setIdentifier(UUID.randomUUID().toString()); // setting random identifier for the moment
             JobSeeker jobSeeker = modelMapper.map(reqJobSeeker, JobSeeker.class);
+            jobSeeker.setUuid(parsedJobSeekerUuid);
             JobSeeker updatedJobSeeker = repository.save(jobSeeker);
             return modelMapper.map(updatedJobSeeker, ResJobSeeker.class);
         } catch (DataIntegrityViolationException e) {

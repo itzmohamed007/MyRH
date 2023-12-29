@@ -1,21 +1,19 @@
 package com.myrh.services;
 
-import com.myrh.Embeddables.SeekerOfferId;
-import com.myrh.dtos.noRelations.EmptySeekerOfferId;
+import com.myrh.Embeddables.ApplyingId;
+import com.myrh.dtos.noRelations.EmptyApplyingId;
 import com.myrh.dtos.requests.ReqSeekerOffer;
-import com.myrh.dtos.responses.ResRecruiter;
-import com.myrh.dtos.responses.ResSeekerOffer;
+import com.myrh.dtos.responses.ResApplying;
 import com.myrh.exceptions.BadRequestException;
 import com.myrh.exceptions.ResourceNotFoundException;
 import com.myrh.models.JobOffer;
 import com.myrh.models.JobSeeker;
-import com.myrh.models.SeekerOffer;
+import com.myrh.models.Applying;
 import com.myrh.repositories.JobOfferRepository;
 import com.myrh.repositories.JobSeekerRepository;
-import com.myrh.repositories.SeekerOfferRepository;
-import com.myrh.services.interfaces.ISeekerOfferService;
+import com.myrh.repositories.ApplyingRepository;
+import com.myrh.services.interfaces.IApplyingService;
 import com.myrh.utils.Utils;
-import jdk.jshell.execution.Util;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,31 +23,31 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class SeekerOfferService implements ISeekerOfferService {
-    private final SeekerOfferRepository repository;
+public class ApplyingService implements IApplyingService {
+    private final ApplyingRepository repository;
     private final JobSeekerRepository jobSeekerRepository;
     private final JobOfferRepository jobOfferRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public ResSeekerOffer read(EmptySeekerOfferId emptySeekerOfferId) {
-        SeekerOfferId seekerOfferId = this.parseSeekerOfferId(emptySeekerOfferId);
-        SeekerOffer seekerOffer = this.repository.findById(seekerOfferId)
+    public ResApplying read(EmptyApplyingId emptySeekerOfferId) {
+        ApplyingId seekerOfferId = this.parseSeekerOfferId(emptySeekerOfferId);
+        Applying seekerOffer = this.repository.findById(seekerOfferId)
                 .orElseThrow(() -> new ResourceNotFoundException("No seeker offer was found"));
-        return modelMapper.map(seekerOffer, ResSeekerOffer.class);
+        return modelMapper.map(seekerOffer, ResApplying.class);
     }
 
     @Override
-    public List<ResSeekerOffer> readAll() {
-        List<SeekerOffer> seekerOffers = this.repository.findAll();
+    public List<ResApplying> readAll() {
+        List<Applying> seekerOffers = this.repository.findAll();
         if (seekerOffers.isEmpty()) throw new ResourceNotFoundException("No seeker offers were found");
         return seekerOffers.stream()
-                .map(seekerOffer -> modelMapper.map(seekerOffer, ResSeekerOffer.class))
+                .map(seekerOffer -> modelMapper.map(seekerOffer, ResApplying.class))
                 .toList();
     }
 
     @Override
-    public ResSeekerOffer create(ReqSeekerOffer reqSeekerOffer) {
+    public ResApplying create(ReqSeekerOffer reqSeekerOffer) {
         UUID jobSeekerUuid = Utils.parseStringToUuid(reqSeekerOffer.getJobSeeker());
         UUID jobOfferUuid = Utils.parseStringToUuid(reqSeekerOffer.getJobOffer());
 
@@ -58,25 +56,25 @@ public class SeekerOfferService implements ISeekerOfferService {
         JobOffer jobOffer = this.jobOfferRepository.findById(jobOfferUuid)
                 .orElseThrow(() -> new ResourceNotFoundException("Job offer not found with uuid " + reqSeekerOffer.getJobOffer()));
 
-        SeekerOfferId seekerOfferId = new SeekerOfferId(jobSeekerUuid, jobOfferUuid);
+        ApplyingId seekerOfferId = new ApplyingId(jobSeekerUuid, jobOfferUuid);
 
         if(this.repository.existsById(seekerOfferId))
             throw new BadRequestException("Job seeker with uuid " + jobSeekerUuid + " already had already applied to this job offer");
 
-        SeekerOffer seekerOffer = new SeekerOffer(seekerOfferId, reqSeekerOffer.getLetter(), jobSeeker, jobOffer);
-        SeekerOffer savedSeekerOffer = this.repository.save(seekerOffer);
-        return modelMapper.map(savedSeekerOffer, ResSeekerOffer.class);
+        Applying seekerOffer = new Applying(seekerOfferId, reqSeekerOffer.getLetter(), jobSeeker, jobOffer);
+        Applying savedSeekerOffer = this.repository.save(seekerOffer);
+        return modelMapper.map(savedSeekerOffer, ResApplying.class);
     }
 
     @Override
-    public void delete(EmptySeekerOfferId emptySeekerOfferId) {
-        SeekerOfferId seekerOfferId = parseSeekerOfferId(emptySeekerOfferId);
+    public void delete(EmptyApplyingId emptySeekerOfferId) {
+        ApplyingId seekerOfferId = parseSeekerOfferId(emptySeekerOfferId);
         this.read(emptySeekerOfferId);
         this.repository.deleteById(seekerOfferId);
     }
 
-    private SeekerOfferId parseSeekerOfferId(EmptySeekerOfferId emptySeekerOfferId) {
-        SeekerOfferId seekerOfferId = new SeekerOfferId();
+    private ApplyingId parseSeekerOfferId(EmptyApplyingId emptySeekerOfferId) {
+        ApplyingId seekerOfferId = new ApplyingId();
         seekerOfferId.setOfferUuid(Utils.parseStringToUuid(emptySeekerOfferId.getOfferUuid()));
         seekerOfferId.setSeekerUuid(Utils.parseStringToUuid(emptySeekerOfferId.getSeekerUuid()));
         return seekerOfferId;

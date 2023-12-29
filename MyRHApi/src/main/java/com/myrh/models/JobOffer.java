@@ -30,5 +30,5 @@ public class JobOffer {
     private Recruiter recruiter;
     @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<SeekerOffer> seekerOffers;
+    private Set<Applying> seekerOffers;
 }

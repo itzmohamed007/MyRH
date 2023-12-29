@@ -1,18 +1,10 @@
 package com.myrh.dtos.requests;
 
-import com.myrh.enums.Status;
-import com.myrh.models.Recruiter;
-import com.myrh.models.SeekerOffer;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-
-import java.util.Set;
-import java.util.UUID;
 
 @Data
 public class ReqJobOffer {

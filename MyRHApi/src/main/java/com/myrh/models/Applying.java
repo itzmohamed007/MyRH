@@ -1,6 +1,6 @@
 package com.myrh.models;
 
-import com.myrh.Embeddables.SeekerOfferId;
+import com.myrh.Embeddables.ApplyingId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +12,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SeekerOffer {
+public class Applying {
     @EmbeddedId
-    private SeekerOfferId id;
+    private ApplyingId id;
     private String letter;
     @ManyToOne
     @MapsId("seekerUuid")

@@ -2,10 +2,7 @@ package com.myrh.dtos.responses;
 
 import com.myrh.dtos.noRelations.EmptyRecruiter;
 import com.myrh.enums.Status;
-import com.myrh.models.Recruiter;
-import com.myrh.models.SeekerOffer;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import com.myrh.models.Applying;
 import lombok.Data;
 
 import java.util.Set;
@@ -22,5 +19,5 @@ public class ResJobOffer {
     private Float salary;
     private Status status;
     private EmptyRecruiter recruiter;
-    private Set<SeekerOffer> seekerOffers;
+    private Set<Applying> seekerOffers;
 }
