@@ -26,6 +26,7 @@ public class JobOffer {
     @Column(columnDefinition = "VARCHAR NOT NULL DEFAULT 'pending'")
     private Status status;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Recruiter recruiter;
     @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
