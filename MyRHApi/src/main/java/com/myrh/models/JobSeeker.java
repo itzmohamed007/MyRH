@@ -17,5 +17,5 @@ public class JobSeeker extends User {
     private String resume;
     @OneToMany(mappedBy = "jobSeeker")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<SeekerOffer> seekerOffers;
+    private Set<Applying> seekerOffers;
 }
