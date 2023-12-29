@@ -1,6 +1,7 @@
 package com.myrh.services;
 
 import com.myrh.Embeddables.SeekerOfferId;
+import com.myrh.dtos.noRelations.EmptySeekerOfferId;
 import com.myrh.dtos.requests.ReqSeekerOffer;
 import com.myrh.dtos.responses.ResRecruiter;
 import com.myrh.dtos.responses.ResSeekerOffer;
@@ -31,7 +32,8 @@ public class SeekerOfferService implements ISeekerOfferService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ResSeekerOffer read(SeekerOfferId seekerOfferId) {
+    public ResSeekerOffer read(EmptySeekerOfferId emptySeekerOfferId) {
+        SeekerOfferId seekerOfferId = this.parseSeekerOfferId(emptySeekerOfferId);
         SeekerOffer seekerOffer = this.repository.findById(seekerOfferId)
                 .orElseThrow(() -> new ResourceNotFoundException("No seeker offer was found"));
         return modelMapper.map(seekerOffer, ResSeekerOffer.class);
@@ -58,7 +60,8 @@ public class SeekerOfferService implements ISeekerOfferService {
 
         SeekerOfferId seekerOfferId = new SeekerOfferId(jobSeekerUuid, jobOfferUuid);
 
-        if(this.repository.existsById(seekerOfferId)) throw new BadRequestException("Job seeker with uuid " + jobSeekerUuid + " already had already applied to this job offer");
+        if(this.repository.existsById(seekerOfferId))
+            throw new BadRequestException("Job seeker with uuid " + jobSeekerUuid + " already had already applied to this job offer");
 
         SeekerOffer seekerOffer = new SeekerOffer(seekerOfferId, reqSeekerOffer.getLetter(), jobSeeker, jobOffer);
         SeekerOffer savedSeekerOffer = this.repository.save(seekerOffer);
@@ -66,8 +69,16 @@ public class SeekerOfferService implements ISeekerOfferService {
     }
 
     @Override
-    public void delete(SeekerOfferId seekerOfferId) {
-        this.read(seekerOfferId);
+    public void delete(EmptySeekerOfferId emptySeekerOfferId) {
+        SeekerOfferId seekerOfferId = parseSeekerOfferId(emptySeekerOfferId);
+        this.read(emptySeekerOfferId);
         this.repository.deleteById(seekerOfferId);
+    }
+
+    private SeekerOfferId parseSeekerOfferId(EmptySeekerOfferId emptySeekerOfferId) {
+        SeekerOfferId seekerOfferId = new SeekerOfferId();
+        seekerOfferId.setOfferUuid(Utils.parseStringToUuid(emptySeekerOfferId.getOfferUuid()));
+        seekerOfferId.setSeekerUuid(Utils.parseStringToUuid(emptySeekerOfferId.getSeekerUuid()));
+        return seekerOfferId;
     }
 }
