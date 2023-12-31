@@ -6,6 +6,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleIllegalConstraintViolation(IllegalConstraintViolation e) {
         String violatedKey = this.extractViolatedKey(e.getMessage());
         return new ResponseEntity<>(Map.of("message", "Unique constraint violation " + violatedKey), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, String>> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        return new ResponseEntity<>(Map.of("message", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     private String extractViolatedKey(String message) {

@@ -1,6 +1,7 @@
 package com.myrh.utils;
 
 import com.myrh.exceptions.BadRequestException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
