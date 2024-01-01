@@ -1,5 +1,6 @@
 package com.myrh.dtos.responses;
 
+import com.myrh.dtos.noRelations.EmptyFile;
 import com.myrh.dtos.noRelations.EmptyJobOffer;
 import com.myrh.dtos.noRelations.EmptyUser;
 import lombok.Data;
@@ -11,6 +12,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class ResRecruiter extends EmptyUser {
     private String password;
-    private String image;
+    private ResFile image;
     private Set<EmptyJobOffer> jobOffers;
 }

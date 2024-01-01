@@ -1,9 +1,6 @@
 package com.myrh.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
@@ -16,7 +13,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Recruiter extends User {
     private String password;
-    private String image;
+    @OneToOne
+    private File image;
     @OneToMany(mappedBy = "recruiter", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<JobOffer> jobOffers;

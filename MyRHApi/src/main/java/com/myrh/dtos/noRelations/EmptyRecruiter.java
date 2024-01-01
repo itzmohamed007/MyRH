@@ -14,5 +14,5 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class EmptyRecruiter extends EmptyUser {
     private String password;
-    private String image;
+    private EmptyFile image;
 }
