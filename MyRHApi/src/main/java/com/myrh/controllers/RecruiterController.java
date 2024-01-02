@@ -20,6 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/recruiters")
+@CrossOrigin("http://localhost:4200")
 @RequiredArgsConstructor
 public class RecruiterController implements IGlobalController<ReqRecruiter, ResRecruiter, String> {
     private final IRecruiterService service;

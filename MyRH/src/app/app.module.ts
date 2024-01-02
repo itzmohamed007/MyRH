@@ -10,6 +10,7 @@ import { PendingOffersComponent } from './views/pending-offers/pending-offers.co
 import { OfferComponent } from './views/offer/offer.component';
 import { AuthenticationComponent } from './views/authentication/authentication.component';
 import { ApplyingComponent } from './views/applying/applying.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ApplyingComponent } from './views/applying/applying.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
