@@ -1,0 +1,43 @@
+.categorie {
+    cursor: default;
+  }
+  .catgories {
+    flex-wrap: wrap;
+  }
+  .other-topics img {
+    cursor: pointer;
+  }
+  .main-image-container {
+    position: relative;
+    overflow: hidden;
+  }
+  .main-image {
+    width: 100%;
+    height: 100%;
+  }
+  .image-text {
+    text-align: center;
+    position: absolute;
+    color: white;
+    z-index: 1;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .other-topics img {
+    width: 300px;
+    max-width: 100%;
+    height: 250px;
+  }
+  .post-info {
+    font-size: 0.8rem;
+  }
+  .post-description {
+    font-size: 1.3rem;
+  }
+  @media (max-width: 768px) {
+    .main-image-container {
+      width: 500px;
+      height: 350px;
+    }
+  }

@@ -1,0 +1,29 @@
+.hero {
+    padding: 2rem 5rem;
+    background-color: lavender;
+    width: 50%;
+  }
+  .submit {
+    background-color: rgb(211, 198, 255);
+    border: none;
+    transition: .5s ease-in-out;
+  }
+  .submit:hover {
+    background-color: rgb(159, 130, 255);
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  a:hover {
+    color: inherit;
+  }
+  @media (max-width: 768px) {
+    .hero {
+      padding: 2rem 2rem;
+      width: 90%;
+    }
+    .title {
+      margin-top: 2rem;
+    }
+  }
