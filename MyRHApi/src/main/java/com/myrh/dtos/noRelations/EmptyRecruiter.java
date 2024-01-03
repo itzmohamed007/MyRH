@@ -1,5 +1,6 @@
 package com.myrh.dtos.noRelations;
 
+import com.myrh.dtos.responses.ResFile;
 import com.myrh.models.JobOffer;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -14,5 +15,5 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class EmptyRecruiter extends EmptyUser {
     private String password;
-    private String image;
+    private ResFile image;
 }

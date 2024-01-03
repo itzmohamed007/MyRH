@@ -11,4 +11,5 @@ public interface IFileService {
     File upload(MultipartFile plainFile);
     EmptyFile fetch(UUID uuid);
     ResFile download(UUID uuid);
+    java.io.File downloadFile(UUID uuid);
 }

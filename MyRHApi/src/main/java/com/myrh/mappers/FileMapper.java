@@ -29,10 +29,22 @@ public class FileMapper {
         } catch (IOException e) { throw new BadRequestException(e.getMessage()); }
     }
 
+    public File mapFileToUploadFormat(ResFile plainFile) {
+        File file = new File();
+        file.setUuid(plainFile.getUuid());
+        file.setName(plainFile.getName());
+        file.setSize(plainFile.getSize());
+        file.setContent(plainFile.getContent());
+        file.setType(plainFile.getType());
+        return file;
+    }
+
     public ResFile mapFileToDownloadFormat(File file) {
         ResFile resFile = new ResFile();
+        resFile.setUuid(file.getUuid());
         resFile.setName(file.getName());
         resFile.setType(file.getType());
+        resFile.setSize(file.getSize());
         resFile.setContent(file.getContent());
         return resFile;
     }

@@ -1,0 +1,37 @@
+<section class="w-full px-20">
+  <div class="h-[500px]">
+    <img
+      src="../assets/images/Background.webp"
+      alt=""
+      class="main-image"
+    />
+    <div class="image-text">
+      <p class="font-normal text-3xl mb-1">Looking For Job Offer ?</p>
+      <p class="font-extralight text-sm">
+        Discover tailored job offers for a fulfilling career, from startups to
+        established corporations.
+      </p>
+    </div>
+  </div>
+  <div class="mt-10 w-full flex items-center justify-center">
+    <div class="relative border border-gray-300 rounded-l w-1/4">
+      <input
+        type="search"
+        class="block rounded-l px-2.5 py-2.5 pt-5 m-0 w-full text-sm text-gray-900 bg-gray-50 appearance-none focus:outline-none focus:border focus:border-blue-300 peer"
+        placeholder=" "
+      />
+      <label
+        for="floating_filled"
+        class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+        >Search</label
+      >
+    </div>
+    <button class="rounded-r text-sm px-5 py-4 bg-gray-300 hover:bg-gray-500 hover:text-white transition-colors duration-300">Search</button>
+  </div>
+  <div class="mt-8 grid grid-cols-3 gap-6">
+    <div *ngFor="let jobOffer of jobOffers" class="flex flex-col gap-3 cursor-pointer" [routerLink]="'/offer/' + jobOffer.uuid">
+      <app-offer-card [jobOffer]="jobOffer"></app-offer-card>
+    </div>
+  </div>
+  <div class="p-5"></div>
+</section>

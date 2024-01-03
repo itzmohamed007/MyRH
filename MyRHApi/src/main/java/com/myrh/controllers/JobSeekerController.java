@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/seekers")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class JobSeekerController implements IGlobalController<ReqJobSeeker, ResJobSeeker, String> {
     private final IJobSeekerService service;
 

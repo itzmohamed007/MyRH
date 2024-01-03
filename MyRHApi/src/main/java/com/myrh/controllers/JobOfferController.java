@@ -19,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/offers")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class JobOfferController implements IGlobalController<ReqJobOffer, ResJobOffer, String> {
     private final IJobOfferService service;
 
