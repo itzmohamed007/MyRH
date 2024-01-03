@@ -28,14 +28,9 @@
     </div>
     <button class="rounded-r text-sm px-5 py-4 bg-gray-300 hover:bg-gray-500 hover:text-white transition-colors duration-300">Search</button>
   </div>
-  <div *ngFor="let jobOffer of jobOffers" class="mt-8 grid grid-cols-3 gap-6">
-    <div class="flex flex-col gap-3">
-      <img [src]="sanitizeImage(jobOffer.recruiter.image.content)" class="h-[250px]" />
-      <div class="flex flex-col gap-0">
-        <p class="font-normal text-xl">Company: inetum</p>
-        <p>Post: backend java developer</p>
-        <p class="font-semibold text-sm">Date: 2024-01-02</p>
-      </div>
+  <div class="mt-8 grid grid-cols-3 gap-6">
+    <div *ngFor="let jobOffer of jobOffers" class="flex flex-col gap-3 cursor-pointer" [routerLink]="'/offer/' + jobOffer.uuid">
+      <app-offer-card [jobOffer]="jobOffer"></app-offer-card>
     </div>
   </div>
   <div class="p-5"></div>

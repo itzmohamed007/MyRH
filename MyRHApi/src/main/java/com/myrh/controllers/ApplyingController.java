@@ -17,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/applying")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class ApplyingController implements IBasicController<ReqSeekerOffer, ResApplying, EmptyApplyingId> {
     private final ApplyingService service;
 

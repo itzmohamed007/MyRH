@@ -42,24 +42,23 @@ public class RecruiterService implements IRecruiterService {
         UUID uuid = Utils.parseStringToUuid(stringUUid);
         Recruiter recruiter = repository.findById(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("No Recruiter was found with uuid "+ uuid));
-        ResRecruiter resRecruiter = modelMapper.map(recruiter, ResRecruiter.class);
-        resRecruiter.setImage(fileService.download(recruiter.getImage().getUuid()));
+        return modelMapper.map(recruiter, ResRecruiter.class);
+//        resRecruiter.setImage(fileService.download(recruiter.getImage().getUuid()));
 
-        return resRecruiter;
+//        return resRecruiter;
     }
 
     @Override
     public List<ResRecruiter> readAll() {
         List<Recruiter> recruiters = repository.findAll();
         if(recruiters.isEmpty()) throw new ResourceNotFoundException("No recruiters were found");
-        List<ResRecruiter> resRecruiters = recruiters.stream()
+        return recruiters.stream()
                 .map(recruiter -> modelMapper.map(recruiter, ResRecruiter.class))
                 .toList();
         // fetching image for each recruiter
-        resRecruiters.forEach(resRecruiter -> {
-            resRecruiter.setImage(fileService.download(resRecruiter.getImage().getUuid()));
-        });
-        return resRecruiters;
+//        resRecruiters.forEach(resRecruiter -> {
+//            resRecruiter.setImage(fileService.download(resRecruiter.getImage().getUuid()));
+//        });
     }
 
     @Override
@@ -67,9 +66,7 @@ public class RecruiterService implements IRecruiterService {
         try {
             Recruiter recruiter = modelMapper.map(reqRecruiter, Recruiter.class);
             ResFile resImage = fileService.download(Utils.parseStringToUuid(reqRecruiter.getImage()));
-            System.out.println("downloaded image name: " + resImage.getName());
             recruiter.setImage(fileMapper.mapFileToUploadFormat(resImage));
-            System.out.println("recruiter linked image uuid: " + recruiter.getImage().getUuid());
             Recruiter savedRecruiter = repository.save(recruiter);
             return modelMapper.map(savedRecruiter, ResRecruiter.class);
         } catch (DataIntegrityViolationException e) {

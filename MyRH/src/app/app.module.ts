@@ -11,6 +11,9 @@ import { OfferComponent } from './views/offer/offer.component';
 import { AuthenticationComponent } from './views/authentication/authentication.component';
 import { ApplyingComponent } from './views/applying/applying.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { OfferCardComponent } from './components/offer-card/offer-card.component';
 
 @NgModule({
   declarations: [
@@ -21,14 +24,17 @@ import { HttpClientModule } from '@angular/common/http';
     PendingOffersComponent,
     OfferComponent,
     AuthenticationComponent,
-    ApplyingComponent
+    ApplyingComponent,
+    OfferCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,13 +1,17 @@
 package com.myrh.services;
 
 import com.myrh.dtos.requests.ReqJobSeeker;
+import com.myrh.dtos.responses.ResFile;
 import com.myrh.dtos.responses.ResJobSeeker;
 import com.myrh.dtos.responses.ResRecruiter;
+import com.myrh.exceptions.BadRequestException;
 import com.myrh.exceptions.IllegalConstraintViolation;
 import com.myrh.exceptions.ResourceNotFoundException;
+import com.myrh.mappers.FileMapper;
 import com.myrh.models.JobSeeker;
 import com.myrh.models.Recruiter;
 import com.myrh.repositories.JobSeekerRepository;
+import com.myrh.services.interfaces.IFileService;
 import com.myrh.services.interfaces.IJobSeekerService;
 import com.myrh.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,8 @@ import java.util.UUID;
 public class JobSeekerService implements IJobSeekerService {
     private final JobSeekerRepository repository;
     private final ModelMapper modelMapper;
+    private final IFileService fileService;
+    private final FileMapper fileMapper;
 
     @Override
     public ResJobSeeker read(String stringUUid) {
@@ -48,6 +54,11 @@ public class JobSeekerService implements IJobSeekerService {
         try {
             String identifier = UUID.randomUUID().toString();
             JobSeeker jobSeeker = modelMapper.map(reqJobSeeker, JobSeeker.class);
+            ResFile resResume = fileService.download(Utils.parseStringToUuid(reqJobSeeker.getResume()));
+            if(!resResume.getType().equals("application/pdf")) {
+                throw new BadRequestException(("resume should be a pdf file"));
+            }
+            jobSeeker.setResume(fileMapper.mapFileToUploadFormat(resResume));
             jobSeeker.setIdentifier(identifier);
             JobSeeker savedJobSeeker = repository.save(jobSeeker);
             return modelMapper.map(savedJobSeeker, ResJobSeeker.class);

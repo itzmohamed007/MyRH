@@ -14,7 +14,8 @@ import java.util.Set;
 public class JobSeeker extends User {
     @Column(nullable = false, unique = true)
     private String identifier;
-    private String resume;
+    @OneToOne
+    private File resume;
     @OneToMany(mappedBy = "jobSeeker")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Applying> seekerOffers;

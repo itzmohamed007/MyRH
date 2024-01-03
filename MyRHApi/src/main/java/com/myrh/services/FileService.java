@@ -48,4 +48,18 @@ public class FileService implements IFileService {
             throw new RuntimeException("Failed to save the file to destination: " + destinationPath, e);
         }
     }
+
+    @Override
+    public java.io.File downloadFile(UUID uuid) {
+        File file =  repository.findById(uuid)
+                .orElseThrow(() -> new ResourceNotFoundException("file not found with uuid " + uuid));
+        String destinationPath = "src/main/resources/uploads/" + file.getName();
+        try {
+            java.io.File destinationFile = new java.io.File(destinationPath);
+            Files.write(destinationFile.toPath(), file.getContent());
+            return destinationFile;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save the file to destination: " + destinationPath, e);
+        }
+    }
 }

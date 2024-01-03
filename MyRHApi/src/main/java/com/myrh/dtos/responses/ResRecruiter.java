@@ -12,6 +12,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class ResRecruiter extends EmptyUser {
     private String password;
-    private ResFile image;
+//    private ResFile image;
     private Set<EmptyJobOffer> jobOffers;
 }
